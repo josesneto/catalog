@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="images/crab/crab1c.png">
+    <title>Crab Grabber Game</title>
+</head>
+
+<body>
+    <div id="screen"></div>
+    <div id="screen-hud">
+        <!-- <div id="crab-counter">
+            <img src="images/crab/crab1c.png" width="100px" height="100px">
+            <div id="counter">1/20</div>
+        </div>
+        <div id="help-info"></div>
+        <div id="credits"></div> -->
+    </div>
+    <script src="FrameUtilities.js"></script>
+    <script src="MatrixUtilities.js"></script>
+    <script src="levels.json"></script>
+    <script src="WorldMap.js"></script>
+    <script src="Lino2D.js"></script>
+    <script src="add-behaviors.js"></script>
+    <script src="add-objects.js"></script>
+    <script src="touch-observer.js"></script>
+    <script src="main-code.js"></script>
+</body>
+<style>
+    body {
+        background-color: rgb(18, 18, 18);
+        margin: unset;
+        overflow: hidden;
+    }
+
+    #screen {
+        z-index: 1;
+        position: absolute;
+    }
+    #screen-hud {
+        z-index: 2;
+        position: absolute;
+        /* border: solid rgb(255, 0, 221) 3px; */
+    }
+
+    #crab-counter {
+        position: absolute;
+        background-color: aquamarine;
+        width: 200px;
+        height: 100px;
+    }
+    #help-info {
+        position: absolute;
+        background-color: rgb(153, 127, 255);
+        width: 100px;
+        height: 100px;
+        bottom: 0px;
+    }
+    #credits {
+        position: absolute;
+        background-color: rgb(247, 8, 203);
+        width: 100px;
+        height: 100px;
+        bottom: 0px;
+        right: 0px;
+    }
+
+</style>
+
+</html>
