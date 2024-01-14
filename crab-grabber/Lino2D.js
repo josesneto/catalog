@@ -227,6 +227,7 @@ class L2DJSObject {
         var eci = this.eci; // execution current index
         var self = this;
         this.b_interval = setInterval(function () {
+            if (world.paused) return;
             try {
                 eci = (eci + 1) % self.behavior.length;
                 if (self.behavior.length) {

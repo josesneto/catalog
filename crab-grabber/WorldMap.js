@@ -16,7 +16,7 @@ class WorldMap {
             '2b96bcff',
             '38aac6ff',
             '74c3acff',
-            'bce28dff',
+            'acd189ff',
             'f1e981ff',
             'f5ef9aff',
             '9afc39ff',
@@ -34,7 +34,7 @@ class WorldMap {
         this.canvas_element_id = options.canvas_element_id;
         this.seed = options.seed || Math.round(Math.random() * 1000);
         this.clusters = options.clusters || ((Math.round(Math.random() * 100) % 15) + 10) * this.scale;
-        this.populating_iterations = options.populating_iterations || (20 * this.scale);
+        this.populating_iterations = (options.populating_iterations || 10) * this.scale;
         this.initialize();
     }
 
@@ -81,8 +81,8 @@ class WorldMap {
         var x = x || this.getRandomCoordinate(this.width);
         var y = y || this.getRandomCoordinate(this.height);
         if (this.MATRIX_UTILITIES.hasAdjacentFilledCell(this.matrix, x, y) || !only_to_adjacents) {
-            this.matrix[x][y] = this.matrix[x][y] < this.color_palette.length ?
-                this.matrix[x][y] + 1 :
+            this.matrix[x][y] = this.matrix[x][y] < this.color_palette.length-1 ?
+                this.matrix[x][y] + 2 :
                 this.color_palette.length - 1;
         }
     }

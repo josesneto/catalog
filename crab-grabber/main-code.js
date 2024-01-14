@@ -3,6 +3,7 @@ mu = new MatrixUtilities();
 
 images_to_be_loaded = [
     'images/logo.png',
+    'images/clock.png',
     'images/char/char1.png',
     'images/char/char2.png',
     'images/char/char3.png',
@@ -59,6 +60,16 @@ function loadNextImage(index) {
 function main() {
     console.log('images loaded', images);
 
+    document.getElementById('hud-menu').style.visibility = 'visible';
+    document.getElementById('loading').style.visibility = 'hidden';
+    current_level = 1;
+
+    if (!localStorage.getItem('crab_grabber_level')) {
+        localStorage.setItem('crab_grabber_level', current_level);
+    } else {
+        current_level = localStorage.getItem('crab_grabber_level');
+    }
+
     // var seed = prompt('seed:');
 
     dfs = 15; // default frame scale
@@ -74,43 +85,51 @@ function main() {
         zoom_scale: scale_options[0],
         bg_color: '#162e61ff'
     });
+    world.paused = true;
 
-    map_generation_mode = 2;
+    off_canvas = new OffscreenCanvas(world.canvas.width, world.canvas.height);
+
+    map_generation_mode = current_level % 2;
 
     w_map_parameters = map_generation_mode == 1 ?
         {
             // SINGLE BIG ISLAND
-            width: 250,
-            height: 250,
-            scale: 3,
-            matrix: levels[0].matrix,
+            width: 150,
+            height: 150,
+            scale: 5,
+            populating_iterations: 10,
+            seed: current_level * 9,
+            // matrix: levels[0].matrix,
         } : {
             // // MANY LITTLE ISLANDS
-            width: 400,
-            height: 400,
-            scale: 2,
-            matrix: levels[2].matrix,
+            width: 200,
+            height: 200,
+            scale: 4,
+            populating_iterations: 9,
+            seed: current_level * 9,
+            // matrix: levels[2].matrix,
         }
-
 
     w_map = new WorldMap(w_map_parameters);
 
     water_level = 10 * w_map.scale;
 
-    crabs_initial_quantity = 20;
+    available_seconds = 210 - (Math.ceil(current_level / 5) * 30);
+    crabs_required_quantity = 5 + (((current_level - 1) % 5) * 5);
+    crabs_spawned_quantity = crabs_required_quantity + 5;
 
     if (map_generation_mode == 1) {
         addFlowers(25);
         addGrass(150);
         // addStones(7);
-        addCrabs(20);
+        addCrabs(crabs_spawned_quantity);
         addPalmTrees(80);
         addBigPalmTrees(25);
     } else {
         addFlowers(25);
         addGrass(100);
         // addStones(6);
-        addCrabs(20);
+        addCrabs(crabs_spawned_quantity);
         addPalmTrees(30);
         addBigPalmTrees(10);
     }
@@ -218,7 +237,7 @@ function main() {
                     wr_map = new L2DJSObject({
                         name: 'water contact map',
                         sprites: [sprite_0, sprite_1, sprite_2, sprite_3],
-                        animation_indexes: { default: mu.scaleArray([3, 2, 1, 2, 3, 0, 0, 0, 0, 0, 0], dfs * 2) },
+                        animation_indexes: { default: mu.scaleArray([3, 2, 1, 2, 3, 0, 0, 0], dfs * 2) },
                         animation_state: 'default',
                         contact_matrix: water_contact_matrix,
                         fixed: false,
@@ -237,6 +256,7 @@ function main() {
     window.onkeydown = function (e) {
         pressed_keys[e.key.toUpperCase()] = true;
         if (e.key.toUpperCase() == 'C') world.setViewScale(scale_options[(scale_options.indexOf(world.zoom_scale) + 1) % scale_options.length]);
+        if (e.key.toUpperCase() == 'ESC') pause();
     }
 
     window.onkeyup = function (e) {
@@ -249,6 +269,9 @@ function main() {
         });
     }
 
+
+    // world.setViewScale(1);
+    
     console.log(world);
 
     setTimeout(function () {
@@ -304,12 +327,15 @@ function main() {
             console.log('has_colision', has_colision);
             if (!has_colision && is_on_sand && !is_on_water) {
                 char.position = new_position;
+                world.paused = false;
             } else {
                 new_position = null;
             }
         } while (!new_position);
 
+
         setInterval(function () {
+            if (world.paused) return;
             if (Object.keys(pressed_keys).some(function (k) { return pressed_keys[k] && k.startsWith('ARROW'); }) ||
                 touch_data.drag_orientation.x || touch_data.drag_orientation.y) {
                 char.animation_state = 'walking';
@@ -333,7 +359,8 @@ function main() {
             if (touch_data.drag_orientation.x) offset_x = touch_data.drag_orientation.x * offset_size;
             if (touch_data.drag_orientation.y) offset_y = touch_data.drag_orientation.y * offset_size;
 
-            char.translate(offset_x * vel, offset_y * vel);
+            char.translate(0, offset_y * vel);
+            char.translate(offset_x * vel, 0);
             if (offset_x || offset_y) world.sortObjects();
 
         }, 1000 / 20);
@@ -350,56 +377,131 @@ function main() {
         world.addObjects(col_map);
     });
 
-    setInterval(renderHUD, 500);
+    setInterval(updateHUD, 500);
 
     addEventListener('touchmove', function () {
-        var ctx = world.hud_context;
-        ctx.reset();
-        ctx.strokeStyle = 'white';
-        ctx.globalAlpha = 1;
-        ctx.lineWidth = 20;
-        ctx.beginPath();
-        ctx.arc(touch_data.current_touch.x, touch_data.current_touch.y, 50, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.closePath();
-        ctx.globalAlpha = 0.5;
-        ctx.beginPath();
-        ctx.lineWidth = 120;
-        ctx.moveTo(touch_data.current_touch.x, touch_data.current_touch.y);
-        ctx.lineTo(touch_data.current_move.x, touch_data.current_move.y);
-        ctx.closePath();
-        ctx.globalCompositeOperation = "source-in";
-        ctx.stroke();
-        ctx.globalAlpha = 0.7;
-        ctx.beginPath();
-        ctx.lineWidth = 20;
-        ctx.arc(touch_data.current_touch.x, touch_data.current_touch.y, 20, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.globalCompositeOperation = "destination-over";
-        ctx.strokeStyle = 'white';
-        ctx.stroke();
-        renderHUD();
+        updateHUD();
     });
 
     addEventListener('touchend', function (e) {
         world.hud_context.reset();
-        renderHUD();
+        updateHUD();
     });
     addEventListener('touchcancel', function (e) {
         world.hud_context.reset();
-        renderHUD();
+        updateHUD();
     });
+
+    var countdown_interval = setInterval(function () {
+        if (world.paused) return;
+        if (--available_seconds < 1) {
+            clearInterval(countdown_interval);
+        }
+    }, 1000);
+
+    
 }
 
-function renderHUD() {
+function updateHUD() {
+    var crabs_remaining_quantity = world.objects.filter(function (object) { return object.name.startsWith('crab'); }).length;
+    renderHUD(crabs_remaining_quantity);
+    if (crabs_spawned_quantity - crabs_remaining_quantity < crabs_required_quantity && !available_seconds) {
+        gameOver();
+    }
+    if (crabs_spawned_quantity - crabs_remaining_quantity >= crabs_required_quantity && available_seconds) {
+        goalComplete();
+    }
+}
+
+function renderHUD(crabs_remaining_quantity) {
     var ctx = world.hud_context;
     ctx.imageSmoothingEnabled = false;
     ctx.globalAlpha = 1;
+    ctx.clearRect(0, 0, world.canvas.width, world.canvas.height);
+    ctx.drawImage(images['images/logo.png'], world.canvas.width - 100, world.canvas.height - 100, 100, 100);
     ctx.drawImage(images['images/crab/crab1c.png'], 20, 10, 50, 50);
-    ctx.clearRect(world.canvas.width - 100, world.canvas.height - 100, 100, 100);
-    ctx.drawImage(images['images/logo.png'], world.canvas.width - 100, world.canvas.height - 100, 80, 80);
+    ctx.drawImage(images['images/clock.png'], 20, 70, 50, 50);
     ctx.font = "40px Monospace";
-    var crabs_remaining_quantity = world.objects.filter(function (object) { return object.name.startsWith('crab'); }).length;
-    ctx.clearRect(80, 0, 100, 60);
-    ctx.fillText((crabs_initial_quantity - crabs_remaining_quantity) + "/" + crabs_initial_quantity, 90, 50);
+    ctx.fillText((crabs_spawned_quantity - crabs_remaining_quantity) + "/" + crabs_required_quantity, 90, 50);
+    ctx.fillText(Math.floor(available_seconds / 60) + ':' + ((available_seconds % 60) + '').padStart(2, 0), 90, 110);
+    ctx.fillText('LEVEL ' + current_level, world.canvas.width - 200, 50);
+    renderJoystick();
+}
+
+function renderJoystick() {
+    if (!touch_data.current_move.x && !touch_data.current_move.y) return;
+    var off_ctx = off_canvas.getContext('2d');
+    off_ctx.strokeStyle = 'white';
+    off_ctx.globalAlpha = 1;
+    off_ctx.lineWidth = 20;
+    off_ctx.beginPath();
+    off_ctx.arc(touch_data.current_touch.x, touch_data.current_touch.y, 50, 0, 2 * Math.PI);
+    off_ctx.stroke();
+    off_ctx.closePath();
+    off_ctx.globalAlpha = 0.5;
+    off_ctx.beginPath();
+    off_ctx.lineWidth = 120;
+    off_ctx.moveTo(touch_data.current_touch.x, touch_data.current_touch.y);
+    off_ctx.lineTo(touch_data.current_move.x, touch_data.current_move.y);
+    off_ctx.closePath();
+    off_ctx.globalCompositeOperation = "source-in";
+    off_ctx.stroke();
+    off_ctx.globalAlpha = 0.7;
+    off_ctx.beginPath();
+    off_ctx.lineWidth = 20;
+    off_ctx.arc(touch_data.current_touch.x, touch_data.current_touch.y, 20, 0, 2 * Math.PI);
+    off_ctx.closePath();
+    off_ctx.globalCompositeOperation = "destination-over";
+    off_ctx.strokeStyle = 'white';
+    off_ctx.stroke();
+    world.hud_context.drawImage(off_canvas, 0, 0)
+}
+
+function pause() {
+    world.paused = !world.paused;
+    if (world.paused) {
+        document.getElementById('title').innerHTML = 'GAME PAUSED';
+        document.getElementById('text').innerHTML = 'Click UNPAUSE to continue playing.';
+        document.getElementById('title').style.visibility = 'initial';
+        document.getElementById('text').style.visibility = 'initial';
+        document.getElementById('restart-btn').style.visibility = 'initial';
+        document.getElementById('pause-btn').innerHTML = 'UNPAUSE';
+    } else {
+        document.getElementById('title').style.visibility = 'hidden';
+        document.getElementById('text').style.visibility = 'hidden';
+        document.getElementById('restart-btn').style.visibility = 'hidden';
+        document.getElementById('pause-btn').innerHTML = 'PAUSE';
+    }
+}
+
+function gameOver() {
+    world.paused = true;
+    document.getElementById('title').innerHTML = '✕ GAME OVER ✕';
+    document.getElementById('text').innerHTML = 'The time to achieve the goal is over.';
+    document.getElementById('pause-btn').style.visibility = 'hidden';
+    document.getElementById('title').style.visibility = 'initial';
+    document.getElementById('title').style.color = '#e31675';
+    document.getElementById('text').style.visibility = 'initial';
+    document.getElementById('restart-btn').style.visibility = 'initial';
+}
+
+function goalComplete() {
+    world.paused = true;
+    document.getElementById('title').innerHTML = '✓ GOAL COMPLETE ✓';
+    document.getElementById('text').innerHTML = 'You have successfully achieved the goal!';
+    document.getElementById('pause-btn').style.visibility = 'hidden';
+    document.getElementById('next-level-btn').style.visibility = 'initial';
+    document.getElementById('restart-btn').style.visibility = 'initial';
+    document.getElementById('title').style.visibility = 'initial';
+    document.getElementById('title').style.color = '#10ef4e';
+    document.getElementById('text').style.visibility = 'initial';
+}
+
+function nextLevel() {
+    localStorage.setItem('crab_grabber_level', parseInt(current_level) + 1);
+    location.href = '';
+}
+
+function restartLevel() {
+    location.href = '';
 }
