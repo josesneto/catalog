@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="images/crab/crab1c.png">
+    <title>Crab Grabber Game</title>
+</head>
+
+<body>
+    <div id="screen"></div>
+    <div id="screen-hud"></div>
+    <div id="hud-menu" style="visibility:hidden;">
+        <div class="msg-box" id="title"></div>
+        <div class="msg-box" id="text"></div>
+        <div class="msg-box" id="loading">LOADING...</div>
+        <div class="button" id="pause-btn" onclick="pause();">PAUSE</div>
+        <div class="button" id="next-level-btn" onclick="nextLevel();">NEXT LEVEL</div>
+        <div class="button" id="restart-btn" onclick="restartLevel();">RESTART</div>
+    </div>
+    <script src="FrameUtilities.js"></script>
+    <script src="MatrixUtilities.js"></script>
+    <script src="WorldMap.js"></script>
+    <script src="Lino2D.js"></script>
+    <script src="add-behaviors.js"></script>
+    <script src="add-objects.js"></script>
+    <script src="touch-observer.js"></script>
+    <script src="main-code.js"></script>
+</body>
+<style>
+    body {
+        background-color: rgb(18, 18, 18);
+        background-image: url('images/banner2.png');
+        background-position-x: center;
+        background-position-y: top;
+        background-size: cover;
+        margin: unset;
+        overflow: hidden;
+    }
+
+    #screen {
+        z-index: 1;
+        position: absolute;
+    }
+
+    #screen-hud {
+        z-index: 2;
+        position: absolute;
+    }
+
+    #hud-menu {
+        z-index: 3;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        visibility: hidden;
+    }
+
+    .msg-box {
+        color: #ffffff;
+        font-size: 40px;
+        font-family: monospace;
+        font-weight: bold;
+        margin: auto;
+        padding-top: 5px;
+        width: 100%;
+        height: 90px;
+        position: absolute;
+        text-shadow: 0px 0px 5px #000000;
+        user-select: none;
+        visibility: hidden;
+    }
+
+    #loading {
+        top: 45%;
+        font-size: 70px;
+        visibility: visible;
+    }
+
+    #title {
+        top: 15%;
+        font-size: 70px;
+    }
+
+    #text {
+        top: 30%;
+    }
+
+    .button {
+        color: #ffffff;
+        font-size: 50px;
+        font-family: monospace;
+        font-weight: bold;
+        margin: auto;
+        padding-top: 5px;
+        top: 70%;
+        width: 400px;
+        height: 90px;
+        position: relative;
+        text-shadow: 0px 0px 5px #000000;
+        transition: all .3s;
+        user-select: none;
+        visibility: hidden;
+    }
+
+    .button:hover {
+        font-size: 55px;
+        cursor: pointer;
+        transition: all .3s;
+    }
+
+    #pause-btn {
+        width: 250px;
+        position: absolute;
+        top: unset;
+        bottom: 5px;
+        left: 5px;
+        visibility: inherit;
+    }
+
+    #crab-counter {
+        position: absolute;
+        background-color: aquamarine;
+        width: 200px;
+        height: 100px;
+    }
+
+    #help-info {
+        position: absolute;
+        background-color: rgb(153, 127, 255);
+        width: 100px;
+        height: 100px;
+        bottom: 0px;
+    }
+</style>
+
+</html>
