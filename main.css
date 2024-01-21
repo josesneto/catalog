@@ -39,6 +39,12 @@ body {
     height: 1500px;
 }
 
+#info-content {
+    position: relative;
+    top: 120px;
+}
+
+
 .content-text {
     position: relative;
     background-color: #1bcd65;
