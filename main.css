@@ -1,58 +1,35 @@
 body {
-    background-color: #7fffd4;
+    background-color: #86b6fe;
     /* overflow: hidden; */
 }
 
-#main-box {
-    position: absolute;
-    background-color: #962f2f;
-    top: 250px;
-    width: 100%;
-    height: 1500px;
+div {
+    border: solid black 1px;
+    text-align: center;
 }
 
-.row {
-    /* position: relative; */
+img {
     width: 100%;
 }
 
-#profile-photo-row {
-    position: absolute;
-    top: -150px;
-    z-index: 2;
+/* #main-container {
+    height: 500px;
+} */
+
+.col {
+    height: auto;
+    margin-top: 30px;
+    background-color: azure;
+    margin-bottom: 30px;
 }
 
 #profile-photo-box {
-    width: 250px;
+    position: relative;
+    margin: auto;
     height: 250px;
+    width: 250px;
+    border-radius: 50%;
     border: solid white 20px;
     background-image: url('profile2.jpg');
     background-size: cover;
-    margin: auto;
-    border-radius: 50%;
-}
-
-.info-box {
-    position: absolute;
-    background-color: #ffffff;
-    top: 0px;
-    height: 1500px;
-}
-
-#info-content {
-    position: relative;
-    top: 120px;
-}
-
-
-.content-text {
-    position: relative;
-    background-color: #1bcd65;
-    height: 150px;
-}
-
-.content-image {
-    position: relative;
-    background-color: #155630;
-    height: 150px;
 }
