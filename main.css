@@ -1,0 +1,52 @@
+body {
+    background-color: #7fffd4;
+    /* overflow: hidden; */
+}
+
+#main-box {
+    position: absolute;
+    background-color: #962f2f;
+    top: 250px;
+    width: 100%;
+    height: 1500px;
+}
+
+.row {
+    /* position: relative; */
+    width: 100%;
+}
+
+#profile-photo-row {
+    position: absolute;
+    top: -150px;
+    z-index: 2;
+}
+
+#profile-photo-box {
+    width: 250px;
+    height: 250px;
+    border: solid white 20px;
+    background-image: url('profile2.jpg');
+    background-size: cover;
+    margin: auto;
+    border-radius: 50%;
+}
+
+.info-box {
+    position: absolute;
+    background-color: #ffffff;
+    top: 0px;
+    height: 1500px;
+}
+
+.content-text {
+    position: relative;
+    background-color: #1bcd65;
+    height: 150px;
+}
+
+.content-image {
+    position: relative;
+    background-color: #155630;
+    height: 150px;
+}
