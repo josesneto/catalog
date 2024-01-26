@@ -15,6 +15,7 @@
         <div class="msg-box" id="text"></div>
         <div class="msg-box" id="loading">LOADING...</div>
         <div class="button" id="pause-btn" onclick="pause();">PAUSE</div>
+        <!-- <div class="button" id="help-btn" onclick="showHelp();">SHOW HELP</div> -->
         <div class="button" id="next-level-btn" onclick="nextLevel();">NEXT LEVEL</div>
         <div class="button" id="restart-btn" onclick="restartLevel();">RESTART</div>
     </div>
@@ -37,6 +38,10 @@
         margin: unset;
         overflow: hidden;
     }
+
+    /* div {
+        border: 1px solid red;
+    } */
 
     #screen {
         z-index: 1;
@@ -124,14 +129,6 @@
         background-color: aquamarine;
         width: 200px;
         height: 100px;
-    }
-
-    #help-info {
-        position: absolute;
-        background-color: rgb(153, 127, 255);
-        width: 100px;
-        height: 100px;
-        bottom: 0px;
     }
 </style>
 

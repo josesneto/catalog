@@ -98,16 +98,16 @@ function main() {
     w_map_parameters = map_generation_mode == 1 ?
         {
             // SINGLE BIG ISLAND
-            width: 150,
-            height: 150,
-            scale: 5,
-            populating_iterations: 10,
+            width: 120,
+            height: 120,
+            scale: 3,
+            populating_iterations: 9,
             seed: current_level * 9,
             // matrix: levels[0].matrix,
         } : {
             // // MANY LITTLE ISLANDS
-            width: 200,
-            height: 200,
+            width: 100,
+            height: 100,
             scale: 4,
             populating_iterations: 9,
             seed: current_level * 9,
@@ -127,8 +127,8 @@ function main() {
         addGrass(150);
         // addStones(7);
         addCrabs(crabs_spawned_quantity);
-        addPalmTrees(80);
-        addBigPalmTrees(25);
+        addPalmTrees(20);
+        addBigPalmTrees(6);
     } else {
         addFlowers(25);
         addGrass(100);
@@ -387,7 +387,7 @@ function main() {
         world.addObjects(col_map);
     });
 
-    setInterval(updateHUD, 250);
+    setInterval(updateHUD, 500);
 
     addEventListener('touchmove', function () {
         updateHUD();
@@ -464,12 +464,12 @@ function renderCompass() {
             off_canvas2.width / scale * cleared_area_pct,
             off_canvas2.height / scale * cleared_area_pct);
     }
-    off_ctx.fillStyle = '#00000055';
+    off_ctx.fillStyle = '#00000077';
     off_ctx.globalCompositeOperation = 'destination-out';
     var cleared_area_pct = 98;
-    while (cleared_area_pct > 60) {
+    while (cleared_area_pct > 75) {
         clearRect(cleared_area_pct / 100);
-        cleared_area_pct -= 3;
+        cleared_area_pct -= 2;
     }
     world.hud_context.drawImage(off_canvas2,
         off_canvas2.width / 2 - char.position.x * scale,
@@ -515,11 +515,13 @@ function pause() {
         document.getElementById('title').style.visibility = 'initial';
         document.getElementById('text').style.visibility = 'initial';
         document.getElementById('restart-btn').style.visibility = 'initial';
+        // document.getElementById('help-btn').style.visibility = 'initial';
         document.getElementById('pause-btn').innerHTML = 'UNPAUSE';
     } else {
         document.getElementById('title').style.visibility = 'hidden';
         document.getElementById('text').style.visibility = 'hidden';
         document.getElementById('restart-btn').style.visibility = 'hidden';
+        // document.getElementById('help-btn').style.visibility = 'hidden';
         document.getElementById('pause-btn').innerHTML = 'PAUSE';
     }
 }
@@ -527,8 +529,9 @@ function pause() {
 function gameOver() {
     world.paused = true;
     document.getElementById('title').innerHTML = '✕ GAME OVER ✕';
-    document.getElementById('text').innerHTML = 'The time to achieve the goal is over.';
+    document.getElementById('text').innerHTML = 'Time is up.';
     document.getElementById('pause-btn').style.visibility = 'hidden';
+    // document.getElementById('help-btn').style.visibility = 'hidden';
     document.getElementById('title').style.visibility = 'initial';
     document.getElementById('title').style.color = '#e31675';
     document.getElementById('text').style.visibility = 'initial';
@@ -537,9 +540,10 @@ function gameOver() {
 
 function goalComplete() {
     world.paused = true;
-    document.getElementById('title').innerHTML = '✓ GOAL COMPLETE ✓';
-    document.getElementById('text').innerHTML = 'You have successfully achieved the goal!';
+    document.getElementById('title').innerHTML = '✓ LEVEL COMPLETE ✓';
+    document.getElementById('text').innerHTML = 'You have successfully completed the level!';
     document.getElementById('pause-btn').style.visibility = 'hidden';
+    // document.getElementById('help-btn').style.visibility = 'hidden';
     document.getElementById('next-level-btn').style.visibility = 'initial';
     document.getElementById('restart-btn').style.visibility = 'initial';
     document.getElementById('title').style.visibility = 'initial';
@@ -552,6 +556,7 @@ function gameComplete() {
     document.getElementById('title').innerHTML = '!!! CONGRATULATIONS !!!';
     document.getElementById('text').innerHTML = 'You have completed the game, collecting 300 crabs along the way!<br>( ͡° ͜ʖ ͡°) THANKS FOR PLAYING ( ͡° ͜ʖ ͡°)';
     document.getElementById('pause-btn').style.visibility = 'hidden';
+    // document.getElementById('help-btn').style.visibility = 'hidden';
     document.getElementById('restart-btn').style.visibility = 'initial';
     localStorage.setItem('crab_grabber_level', 1);
     document.getElementById('title').style.visibility = 'initial';
