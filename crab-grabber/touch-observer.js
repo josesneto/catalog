@@ -1,4 +1,4 @@
-drag_tolerance = 50;
+drag_tolerance = 25;
 
 touch_data = {
     current_touch: {
