@@ -2,9 +2,9 @@ function addFlowers(n) {
 
     var flowers_t1 = new Array(n).fill(null);
     var flower_t1_sprites = [
-        images['images/flowers/flower1a.png'],
-        images['images/flowers/flower1b.png'],
-        images['images/flowers/flower1c.png'],
+        {name: 'flower1a', x: 72, y: 24, w: 12, h: 12},
+        {name: 'flower1b', x: 84, y: 24, w: 12, h: 12},
+        {name: 'flower1c', x: 96, y: 24, w: 12, h: 12},
     ];
 
     flower_coordinates = new Array(flowers_t1.length).fill(null).map(function (item) {
@@ -39,9 +39,9 @@ function addFlowers(n) {
 function addGrass(n) {
     var grass_t1 = new Array(n).fill(null);
     var grass_t1_sprites = [
-        images['images/grass/grass1a.png'],
-        images['images/grass/grass1b.png'],
-        images['images/grass/grass1c.png'],
+        {name: 'grass1a', x: 108, y: 24, w: 12, h: 12},
+        {name: 'grass1b', x: 120, y: 24, w: 12, h: 12},
+        {name: 'grass1c', x: 132, y: 24, w: 12, h: 12},
     ];
 
     grass_coordinates = new Array(grass_t1.length).fill(null).map(function (item) {
@@ -76,12 +76,12 @@ function addGrass(n) {
 function addCrabs(n) {
     var crabs = new Array(n).fill(null);
     var crab_sprites = [
-        images['images/crab/crab1a.png'],
-        images['images/crab/crab1b.png'],
-        images['images/crab/crab1c.png'],
-        images['images/crab/crab1d.png'],
-        images['images/crab/crab1e.png'],
-        images['images/crab/crab1f.png'],
+        {name: 'crab1a', x: 0, y: 24, w: 12, h: 12},
+        {name: 'crab1b', x: 12, y: 24, w: 12, h: 12},
+        {name: 'crab1c', x: 24, y: 24, w: 12, h: 12},
+        {name: 'crab1d', x: 36, y: 24, w: 12, h: 12},
+        {name: 'crab1e', x: 48, y: 24, w: 12, h: 12},
+        {name: 'crab1f', x: 60, y: 24, w: 12, h: 12},
     ];
 
     crab_coordinates = new Array(crabs.length).fill(null).map(function (item) {
@@ -140,9 +140,9 @@ function addStones(space) {
 function addPalmTrees(n) {
     var palm_trees = new Array(n).fill(null);
     var palm_trees_sprites = [
-        images['images/palm-trees/palm-tree1a.png'],
-        images['images/palm-trees/palm-tree1b.png'],
-        images['images/palm-trees/palm-tree1c.png'],
+        {name: 'palm-tree1a', x: 0, y: 36, w: 32, h: 32},
+        {name: 'palm-tree1b', x: 32, y: 36, w: 32, h: 32},
+        {name: 'palm-tree1c', x: 64, y: 36, w: 32, h: 32},
     ];
 
     var palm_trees_coordinates = new Array(palm_trees.length).fill(null).map(function (item) {
@@ -178,9 +178,9 @@ function addPalmTrees(n) {
 function addBigPalmTrees(n) {
     var palm_trees = new Array(n).fill(null);
     var palm_trees_sprites = [
-        images['images/palm-trees/palm-tree2a.png'],
-        images['images/palm-trees/palm-tree2b.png'],
-        images['images/palm-trees/palm-tree2c.png'],
+        {name: 'palm-tree2a', x: 0, y: 68, w: 64, h: 64},
+        {name: 'palm-tree2b', x: 64, y: 68, w: 64, h: 64},
+        {name: 'palm-tree2c', x: 128, y: 68, w: 64, h: 64},
     ];
 
     var palm_trees_coordinates = new Array(palm_trees.length).fill(null).map(function (item) {

@@ -46,5 +46,6 @@ function crabBehavior(self, x_translate, y_translate) {
         character.is_grabbing_crab = true;
         setTimeout(function() {character.is_grabbing_crab = false;}, 1000);
         self.world.objects = self.world.objects.filter(function (object) { return object.name != self.name; });
+        clearInterval(self.b_interval);
     }
 }

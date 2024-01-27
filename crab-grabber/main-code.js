@@ -2,42 +2,6 @@ fu = new FrameUtilities();
 mu = new MatrixUtilities();
 
 images_to_be_loaded = [
-    'images/logo.png',
-    'images/clock.png',
-    'images/char/char1.png',
-    'images/char/char2.png',
-    'images/char/char3.png',
-    'images/char/char4.png',
-    'images/char/char5.png',
-    'images/char/schar1.png',
-    'images/char/schar2.png',
-    'images/char/schar3.png',
-    'images/char/schar4.png',
-    'images/char/schar5.png',
-    'images/char/charwcrab1.png',
-    'images/char/charwcrab2.png',
-    'images/char/charwcrab3.png',
-    'images/flowers/flower1a.png',
-    'images/flowers/flower1b.png',
-    'images/flowers/flower1c.png',
-    'images/grass/grass1a.png',
-    'images/grass/grass1b.png',
-    'images/grass/grass1c.png',
-    // 'images/stones/stone1.png',
-    // 'images/stones/stone2.png',
-    // 'images/stones/stone3.png',
-    'images/crab/crab1a.png',
-    'images/crab/crab1b.png',
-    'images/crab/crab1c.png',
-    'images/crab/crab1d.png',
-    'images/crab/crab1e.png',
-    'images/crab/crab1f.png',
-    'images/palm-trees/palm-tree1a.png',
-    'images/palm-trees/palm-tree1b.png',
-    'images/palm-trees/palm-tree1c.png',
-    'images/palm-trees/palm-tree2a.png',
-    'images/palm-trees/palm-tree2b.png',
-    'images/palm-trees/palm-tree2c.png',
     'images/all-sprites.png'
 ];
 images = {};
@@ -87,6 +51,7 @@ function main() {
         width: window.innerWidth,
         height: window.innerHeight,
         zoom_scale: scale_options[0],
+        sprites_image: images['images/all-sprites.png'],
         bg_color: '#162e61ff'
     });
     world.paused = true;
@@ -282,19 +247,19 @@ function main() {
     setTimeout(function () {
 
         char_sprites = [
-            images['images/char/char1.png'],
-            images['images/char/char2.png'],
-            images['images/char/char3.png'],
-            images['images/char/char4.png'],
-            images['images/char/char5.png'],
-            images['images/char/schar1.png'],
-            images['images/char/schar2.png'],
-            images['images/char/schar3.png'],
-            images['images/char/schar4.png'],
-            images['images/char/schar5.png'],
-            images['images/char/charwcrab1.png'],
-            images['images/char/charwcrab2.png'],
-            images['images/char/charwcrab3.png'],
+            { name: 'char1', x: 0, y: 0, w: 24, h: 24 },
+            { name: 'char2', x: 24, y: 0, w: 24, h: 24 },
+            { name: 'char3', x: 48, y: 0, w: 24, h: 24 },
+            { name: 'char4', x: 72, y: 0, w: 24, h: 24 },
+            { name: 'char5', x: 96, y: 0, w: 24, h: 24 },
+            { name: 'schar1', x: 120, y: 0, w: 24, h: 24 },
+            { name: 'schar2', x: 144, y: 0, w: 24, h: 24 },
+            { name: 'schar3', x: 168, y: 0, w: 24, h: 24 },
+            { name: 'schar4', x: 192, y: 0, w: 24, h: 24 },
+            { name: 'schar5', x: 216, y: 0, w: 24, h: 24 },
+            { name: 'charwcrab1', x: 240, y: 0, w: 24, h: 24 },
+            { name: 'charwcrab2', x: 264, y: 0, w: 24, h: 24 },
+            { name: 'charwcrab3', x: 288, y: 0, w: 24, h: 24 },
         ];
 
         char_animation_indexes = {
@@ -317,13 +282,10 @@ function main() {
 
         world.addObjects(char);
 
-        wave_sprites = [
-            images['images/waves/waves1.png'],
-            images['images/waves/waves2.png'],
-            images['images/waves/waves3.png'],
-            images['images/waves/waves4.png'],
-            images['images/waves/waves5.png'],
-        ];
+        logo_sprite = { name: 'logo', x: 144, y: 24, w: 25, h: 25 };
+        clock_hud_sprite = { name: 'clock-hud', x: 169, y: 24, w: 12, h: 12 };
+        crab_hud_sprite = { name: 'crab-hud', x: 24, y: 24, w: 12, h: 12 };
+
 
         do {
             var new_position = {
@@ -424,14 +386,18 @@ function updateHUD() {
     }
 }
 
+function drawHUDImage(image_data, ctx, x, y, w, h) {
+    ctx.drawImage(images['images/all-sprites.png'], image_data.x, image_data.y, image_data.w, image_data.h, x, y, w, h);
+}
+
 function renderHUD(crabs_remaining_quantity) {
     var ctx = world.hud_context;
     ctx.imageSmoothingEnabled = false;
     ctx.globalAlpha = 1;
     ctx.clearRect(0, 0, world.canvas.width, world.canvas.height);
-    ctx.drawImage(images['images/logo.png'], world.canvas.width - 100, world.canvas.height - 100, 100, 100);
-    ctx.drawImage(images['images/crab/crab1c.png'], 20, 10, 50, 50);
-    ctx.drawImage(images['images/clock.png'], 20, 70, 50, 50);
+    drawHUDImage(logo_sprite, ctx, world.canvas.width - 100, world.canvas.height - 100, 100, 100);
+    drawHUDImage(crab_hud_sprite, ctx, 20, 10, 50, 50);
+    drawHUDImage(clock_hud_sprite, ctx, 20, 70, 50, 50);
     ctx.font = "40px Monospace";
     ctx.fillStyle = '#000000';
     ctx.fillText((crabs_spawned_quantity - crabs_remaining_quantity) + "/" + crabs_required_quantity, 90, 50);

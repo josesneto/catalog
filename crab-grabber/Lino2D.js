@@ -18,6 +18,7 @@ class L2DJSWorld {
         this.hud_context = this.hud_canvas.getContext('2d');
         this.context.fillStyle = options.bg_color || 'black';
         this.context.imageSmoothingEnabled = false;
+        this.sprites_image = options.sprites_image;
         this.fps = options.fps || 30;
         this.fi = 0;
         this.translated_position = { x: 0, y: 0 };
@@ -78,7 +79,7 @@ class L2DJSWorld {
         if (this.is_framing) return false; else this.is_framing = true;
         var self = this;
         var framing_function = function () {
-            self.context.fillRect(-self.canvas.width, -self.canvas.height, self.canvas.width * 3, self.canvas.height * 3);
+            // self.context.fillRect(-self.canvas.width, -self.canvas.height, self.canvas.width * 3, self.canvas.height * 3);
             self.objects.filter(function (object) {
                 return object.isVisible();
             }).forEach(function (object) {
@@ -92,7 +93,21 @@ class L2DJSWorld {
                     } else {
                         var sprite = object.sprites[0];
                     }
-                    self.context.drawImage(sprite, object.position.x + object.sprite_offset.x, object.position.y + object.sprite_offset.y);
+
+                    if (sprite.name)
+                        self.context.drawImage(self.sprites_image,
+                            sprite.x, 
+                            sprite.y, 
+                            sprite.w, 
+                            sprite.h, 
+                            object.position.x + object.sprite_offset.x, 
+                            object.position.y + object.sprite_offset.y, 
+                            sprite.w, 
+                            sprite.h
+                            );
+                    else
+                        self.context.drawImage(sprite, object.position.x + object.sprite_offset.x, object.position.y + object.sprite_offset.y);
+                    //context.drawImage(img, sx, sy, swidth, sheight, x, y, width, height);
                     // self.context.fillRect(object.position.x , object.position.y, 1, 1); // UNCOMMENT FOR DEBUG
                 }
             });
@@ -207,9 +222,9 @@ class L2DJSObject {
     isVisible() {
         return this.always_render ||
             (this.position.x - this.sprite_offset.x > this.world.focused_position.x - (this.world.canvas.width / this.world.zoom_scale) / 2 &&
-             this.position.x + this.sprite_offset.x < this.world.focused_position.x + (this.world.canvas.width / this.world.zoom_scale) / 2 &&
-             this.position.y - this.sprite_offset.y > this.world.focused_position.y - (this.world.canvas.height / this.world.zoom_scale) / 2 &&
-             this.position.y + this.sprite_offset.y < this.world.focused_position.y + (this.world.canvas.height / this.world.zoom_scale) / 2);
+                this.position.x + this.sprite_offset.x < this.world.focused_position.x + (this.world.canvas.width / this.world.zoom_scale) / 2 &&
+                this.position.y - this.sprite_offset.y > this.world.focused_position.y - (this.world.canvas.height / this.world.zoom_scale) / 2 &&
+                this.position.y + this.sprite_offset.y < this.world.focused_position.y + (this.world.canvas.height / this.world.zoom_scale) / 2);
     }
 
     getPositionRelatedData(position) {
