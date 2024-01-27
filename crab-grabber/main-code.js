@@ -38,6 +38,7 @@ images_to_be_loaded = [
     'images/palm-trees/palm-tree2a.png',
     'images/palm-trees/palm-tree2b.png',
     'images/palm-trees/palm-tree2c.png',
+    'images/all-sprites.png'
 ];
 images = {};
 images_ready = false;
