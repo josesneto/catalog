@@ -431,7 +431,7 @@ function renderCompass() {
             off_canvas2.width / scale * cleared_area_pct,
             off_canvas2.height / scale * cleared_area_pct);
     }
-    off_ctx.fillStyle = '#00000077';
+    off_ctx.fillStyle = '#00000066';
     off_ctx.globalCompositeOperation = 'destination-out';
     var cleared_area_pct = 98;
     while (cleared_area_pct > 75) {
@@ -521,7 +521,7 @@ function goalComplete() {
 function gameComplete() {
     world.paused = true;
     document.getElementById('title').innerHTML = '!!! CONGRATULATIONS !!!';
-    document.getElementById('text').innerHTML = 'You have completed the game, collecting 300 crabs along the way!<br>( ͡° ͜ʖ ͡°) THANKS FOR PLAYING ( ͡° ͜ʖ ͡°)';
+    document.getElementById('text').innerHTML = 'You have completed the game, collecting 300 crabs along the way!<br>=D THANKS FOR PLAYING =)';
     document.getElementById('pause-btn').style.visibility = 'hidden';
     // document.getElementById('help-btn').style.visibility = 'hidden';
     document.getElementById('restart-btn').style.visibility = 'initial';

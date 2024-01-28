@@ -79,7 +79,7 @@ class L2DJSWorld {
         if (this.is_framing) return false; else this.is_framing = true;
         var self = this;
         var framing_function = function () {
-            // self.context.fillRect(-self.canvas.width, -self.canvas.height, self.canvas.width * 3, self.canvas.height * 3);
+            self.context.fillRect(-self.canvas.width, -self.canvas.height, self.canvas.width * 3, self.canvas.height * 3);
             self.objects.filter(function (object) {
                 return object.isVisible();
             }).forEach(function (object) {
@@ -94,20 +94,20 @@ class L2DJSWorld {
                         var sprite = object.sprites[0];
                     }
 
-                    if (sprite.name)
+                    if (sprite.name) {
                         self.context.drawImage(self.sprites_image,
-                            sprite.x, 
-                            sprite.y, 
-                            sprite.w, 
-                            sprite.h, 
-                            object.position.x + object.sprite_offset.x, 
-                            object.position.y + object.sprite_offset.y, 
-                            sprite.w, 
+                            sprite.x,
+                            sprite.y,
+                            sprite.w,
+                            sprite.h,
+                            object.position.x + object.sprite_offset.x,
+                            object.position.y + object.sprite_offset.y,
+                            sprite.w,
                             sprite.h
-                            );
-                    else
+                        );
+                    } else {
                         self.context.drawImage(sprite, object.position.x + object.sprite_offset.x, object.position.y + object.sprite_offset.y);
-                    //context.drawImage(img, sx, sy, swidth, sheight, x, y, width, height);
+                    }
                     // self.context.fillRect(object.position.x , object.position.y, 1, 1); // UNCOMMENT FOR DEBUG
                 }
             });
